@@ -1,2 +1,2 @@
-import home from './home';
-export {home};
+import Dashboard from './Dashboard';
+export {Dashboard};
