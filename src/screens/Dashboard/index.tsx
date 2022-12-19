@@ -27,7 +27,7 @@ let data_type = [
   {id: 0, title: 'TEXT', type: 'TEXT'},
   {id: 1, title: 'NUMBER', type: 'NUMBER'},
   {id: 1, title: 'DATE', type: 'DATE'},
-  {id: 1, title: 'CHECKBOX', type: 'CHECKBOX'},
+  {id: 1, title: 'CHECKBOX', type: 'BOOL'},
 ];
 const Dashboard = () => {
   const {actions, state} = useMachines();

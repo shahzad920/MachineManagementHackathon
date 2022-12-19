@@ -11,7 +11,6 @@ const index = props => {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      {state.map((i)=>(<DrawerItem label={i.name} />))}
     </DrawerContentScrollView>
   );
 };

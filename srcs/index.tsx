@@ -15,13 +15,12 @@ import RootNavigator from './navigation';
 import {persistor, store} from './store';
 
 const App = () => {
-  return (
-    <Provider store={store}>
-      {/* <PersistGate persistor={persistor}> */}
+  return(
+  <Provider store={store}>
+    {/* <PersistGate persistor={persistor}> */}
       <RootNavigator />
-      {/* </PersistGate> */}
-    </Provider>
-  );
+    {/* </PersistGate> */}
+  </Provider>);
 };
 
 export default App;

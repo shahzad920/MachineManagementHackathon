@@ -1,14 +1,14 @@
 
 import { generateUUID } from "../../functions/generateUUID";
 import { MachineActions } from "../actions/Machines.actions";
-import { MachineTypeInterface, MachineAction } from "../types/Machines.types";
+import { CategoryInterface, MachineAction } from "../types/Machines.types";
 
 
 
 
-export const MachineReducer = (state: MachineTypeInterface[] = [], action: MachineAction): MachineTypeInterface[] => {
+export const MachineReducer = (state: CategoryInterface[] = [], action: MachineAction): CategoryInterface[] => {
     switch (action.type) {
-        case MachineActions.AddMachineType:
+        case MachineActions.AddCategory:
             return state.concat([
                 {
                     id: generateUUID(),
@@ -17,7 +17,7 @@ export const MachineReducer = (state: MachineTypeInterface[] = [], action: Machi
                     machines: []
                 }
             ])
-        case MachineActions.EditMachineType:
+        case MachineActions.EditCategory:
             return state.map(i => {
                 if (i.id == action.payload.id) {
                     const clone = { ...i }
@@ -26,10 +26,10 @@ export const MachineReducer = (state: MachineTypeInterface[] = [], action: Machi
                 }
                 return i
             })
-        case MachineActions.DeleteMachineType:
+        case MachineActions.DeleteCategory:
             return state.filter(i => i.id != action.payload.id)
 
-        case MachineActions.AddMachineTypeField:
+        case MachineActions.AddCategoryField:
             return state.map(i => {
                 if (i.id == action.payload.id) {
                     const clone = { ...i }
@@ -45,7 +45,7 @@ export const MachineReducer = (state: MachineTypeInterface[] = [], action: Machi
                 }
                 return i
             })
-        case MachineActions.EditMachineTypeField:
+        case MachineActions.EditCategoryField:
             return state.map(i => {
                 if (i.id == action.payload.id) {
                     const clone = { ...i }
@@ -62,7 +62,7 @@ export const MachineReducer = (state: MachineTypeInterface[] = [], action: Machi
                 }
                 return i
             })
-        case MachineActions.DeleteMachineTypeField:
+        case MachineActions.DeleteCategoryField:
             return state.map(i => {
                 if (i.id == action.payload.id) {
                     const clone = { ...i }
