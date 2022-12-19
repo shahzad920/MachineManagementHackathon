@@ -1,110 +1,151 @@
-import {StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, ScrollView, Dimensions, Keyboard} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
 import {useMachines} from '../../hooks/useMachines';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
-import {Block, MaterialTextField, Switch} from '../../component';
+import {
+  Block,
+  DateTimePickerHandler,
+  MaterialTextField,
+  Separator,
+  Switch,
+} from '../../component';
 import {Button} from 'react-native-paper';
 import {Colors, Metrics} from '../../theme';
 
 type Props = {};
 
 export const Machine = ({id}: {id: string}) => {
+  // ref
+  const dateTimePickerRef = useRef<DateTimePickerHandler>(null);
+  // state
+  const [date, setDate] = useState<date>({});
+
   const {actions, state} = useMachines();
   const machine = state.find(s => s.id == id);
+
+  const [orientation, setOrientation] = useState('PORTRAIT');
+
+  useEffect(() => {
+    Dimensions.addEventListener('change', ({window: {width, height}}) => {
+      if (width < height) {
+        setOrientation('PORTRAIT');
+      } else {
+        setOrientation('LANDSCAPE');
+      }
+    });
+  }, []);
   return (
-    <Block flex p={Metrics.smallMargin}>
-      <Block row space="between" middle>
-        <Text style={{height: 'auto', fontSize: 22}}>{machine?.name}</Text>
-        <Button
-          mode="contained"
-          buttonColor={Colors.PRIMARY}
-          textColor={Colors.WHITE}
-          onPress={() => {
-            if (machine) actions.AddMachine({id: machine.id});
-          }}
-          style={[styles.btn]}>
-          ADD NEW ITEM
-        </Button>
-      </Block>
-      <Block>
-        {machine?.machines.map(item => (
-          <Block
-            mVertical={Metrics.smallMargin}
-            bgColor={Colors.WHITE}
-            p={Metrics.smallMargin}>
-            <MaterialTextField
-              label={'Name'}
-              value={item.name}
-              onChangeText={name =>
-                actions.EditMachine({
-                  id: machine.id,
-                  machineId: item.machineId,
-                  name,
-                })
-              }
-            />
-
-            {machine?.fields.map(field =>
-              field.type === 'BOOL' ? (
-                <Switch
-                  label={field.name}
-                  onValueChange={value =>
-                    actions.EditMachineField({
-                      id: machine.id,
-                      machineId: item.machineId,
-                      basedOnFieldId: field.fieldId,
-                      value,
-                    })
-                  }
-                />
-              ) : field.type === 'DATE' ? (
-                <MaterialTextField
-                  label={field.name}
-                  value={item.data[field.fieldId]}
-                  onChangeText={value =>
-                    actions.EditMachineField({
-                      id: machine.id,
-                      machineId: item.machineId,
-                      basedOnFieldId: field.fieldId,
-                      value,
-                    })
-                  }
-                />
-              ) : (
-                <MaterialTextField
-                  label={field.name}
-                  value={item.data[field.fieldId]}
-                  keyboardType={
-                    field.type === 'NUMBER' ? 'number-pad' : 'default'
-                  }
-                  onChangeText={value =>
-                    actions.EditMachineField({
-                      id: machine.id,
-                      machineId: item.machineId,
-                      basedOnFieldId: field.fieldId,
-                      value,
-                    })
-                  }
-                />
-              ),
-            )}
-
+    <Block flex safe>
+      <ScrollView>
+        <Block flex p={Metrics.smallMargin}>
+          <Block row space="between" middle>
+            <Text style={{height: 'auto', fontSize: 22}}>
+              {machine?.name == '' ? 'New Category' : machine?.name}
+            </Text>
             <Button
-              mode="text"
+              mode="contained"
+              buttonColor={Colors.PRIMARY}
+              textColor={Colors.WHITE}
               onPress={() => {
-                if (machine)
-                  actions.DeleteMachine({
-                    id: machine.id,
-                    machineId: item.machineId,
-                  });
+                if (machine) actions.AddMachine({id: machine.id});
               }}
-              icon={'delete'}
-              style={{borderRadius: 4, width: 100}}>
-              REMOVE
+              style={[styles.btn]}>
+              ADD NEW ITEM
             </Button>
           </Block>
-        ))}
-      </Block>
+
+          {machine?.machines.length === 0 && (
+            <Block center mVertical={Metrics.baseMargin}>
+              <Text style={{color: Colors.SECONDARY}}>No Item to display</Text>
+            </Block>
+          )}
+
+          <Block>
+            {machine?.machines.map((item, i) => (
+              <Block
+                mVertical={Metrics.smallMargin}
+                bgColor={Colors.WHITE}
+                p={Metrics.smallMargin}
+                key={i}>
+                {machine?.fields.map((field, i) =>
+                  // <Block><Block>
+                  field.type === 'BOOL' ? (
+                    <Switch
+                      label={field.name}
+                      value={item.data[field.fieldId]}
+                      onValueChange={value =>
+                        actions.EditMachineField({
+                          id: machine.id,
+                          machineId: item.machineId,
+                          basedOnFieldId: field.fieldId,
+                          value,
+                        })
+                      }
+                    />
+                  ) : field.type === 'DATE' ? (
+                    <>
+                      <MaterialTextField
+                        key={date}
+                        label={field.name}
+                        value={item.data[field.fieldId]}
+                        rightIcon={'calendar'}
+                        disabled
+                        editable={false}
+                        // pointerEvents={'none'}
+                        onPress={() => {
+                          dateTimePickerRef.current.showDatePicker();
+                        }}
+                      />
+
+                      <DateTimePickerHandler
+                        ref={dateTimePickerRef}
+                        onConfirm={value => {
+                          actions.EditMachineField({
+                            id: machine.id,
+                            machineId: item.machineId,
+                            basedOnFieldId: field.fieldId,
+                            value,
+                          });
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <MaterialTextField
+                      label={field.name}
+                      value={item.data[field.fieldId]}
+                      keyboardType={
+                        field.type === 'NUMBER' ? 'number-pad' : 'default'
+                      }
+                      onChangeText={value =>
+                        actions.EditMachineField({
+                          id: machine.id,
+                          machineId: item.machineId,
+                          basedOnFieldId: field.fieldId,
+                          value,
+                        })
+                      }
+                    />
+                  ),
+                )}
+
+                <Button
+                  mode="text"
+                  onPress={() => {
+                    if (machine)
+                      actions.DeleteMachine({
+                        id: machine.id,
+                        machineId: item.machineId,
+                      });
+                  }}
+                  icon={'delete'}
+                  style={{borderRadius: 4, width: 100}}>
+                  REMOVE
+                </Button>
+              </Block>
+            ))}
+          </Block>
+        </Block>
+      </ScrollView>
     </Block>
   );
 };
@@ -131,11 +172,14 @@ export const MachineDashBoard = ({route}: {route: RouteProp<Props>}) => {
     <Block safe>
       <ScrollView
         contentContainerStyle={{
-          flexDirection: orientation ? 'row' : 'column',
+          flexDirection:
+            Metrics.screenWidth > 414 || orientation === 'LANDSCAPE'
+              ? 'row'
+              : 'column',
           flexWrap: 'wrap',
         }}>
         {state.map(i => (
-          <Block width={'40%'}>
+          <Block key={i} width={orientation === 'LANDSCAPE' ? '50%' : '100%'}>
             <Machine id={i.id} />
           </Block>
         ))}

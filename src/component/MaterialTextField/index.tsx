@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, StyleProp, ViewStyle} from 'react-native';
+import {StyleSheet, View, StyleProp, ViewStyle, Alert} from 'react-native';
 import {TextInput, TextInputProps} from 'react-native-paper';
 
 export interface InputProps extends TextInputProps {
@@ -7,12 +7,18 @@ export interface InputProps extends TextInputProps {
   onChangeText: React.Dispatch<React.SetStateAction<string>>;
   containerStyle?: StyleProp<ViewStyle>;
   errorMsg?: string;
+  rightIcon?: string;
+  onPresss?: void;
+  disabled?: boolean;
 }
 const MaterialTextField = ({
   errorMsg,
   containerStyle,
   value,
   onChangeText,
+  rightIcon,
+  onPress,
+  disabled,
   ...rest
 }: InputProps) => {
   return (
@@ -23,6 +29,9 @@ const MaterialTextField = ({
         value={value}
         onChangeText={onChangeText}
         style={styles.textInput}
+        onPressIn={() => (disabled ? onPress() : undefined)}
+        // pointerEvents={'none'}
+        // right={<TextInput.Icon icon={rightIcon} onPress={onPressIcon} />}
       />
     </View>
   );

@@ -28,7 +28,7 @@ export default function DrawerNav() {
           name={i.id}
           component={MachineList}
           options={{
-            title: i.name,
+            title: i.name === '' ? 'Category Name' : i.name,
           }}
         />
       ))}
@@ -36,7 +36,7 @@ export default function DrawerNav() {
         name="Dashboard"
         component={Dashboard}
         options={{
-          title: 'Manage Catergory',
+          title: 'Manage Catergories',
         }}
       />
     </Drawer.Navigator>

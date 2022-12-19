@@ -84,7 +84,14 @@ const Dashboard = () => {
                   padding: 8,
                   margin: 4,
                 }}>
-                <Text style={{height: 'auto', fontSize: 22}}>{i.name}</Text>
+                <Text
+                  style={{
+                    height: 'auto',
+                    fontSize: 22,
+                    marginVertical: Metrics.smallMargin,
+                  }}>
+                  {i.name === '' ? 'Category Name' : i.name}
+                </Text>
                 <MaterialTextField
                   label={'Category Name'}
                   value={i.name}
@@ -111,7 +118,7 @@ const Dashboard = () => {
                           fontSize: 16,
                           marginHorizontal: Metrics.smallMargin,
                         }}>
-                        {feild.type}
+                        {feild.type === 'BOOL' ? 'CHACKBOX' : feild.type}
                       </Text>
 
                       <IconButton
@@ -128,6 +135,17 @@ const Dashboard = () => {
                     </Block>
                   </View>
                 ))}
+
+                <Button
+                  mode="outlined"
+                  buttonColor={Colors.PRIMARY}
+                  textColor={Colors.WHITE}
+                  style={[styles.btn, {marginVertical: Metrics.smallMargin}]}>
+                  {`TITLE FIELD: ${
+                    i.fields.length === 0 ? 'UNNAMED FIELD' : i.fields[0].name
+                  }`}
+                </Button>
+
                 <Block row>
                   <Button
                     mode="outlined"
@@ -140,27 +158,30 @@ const Dashboard = () => {
                     ADD NEW FIELD
                   </Button>
                   <Button
-                    mode="outlined"
+                    mode="text"
                     onPress={() => actions.DeleteCategory({id: i.id})}
                     icon={'delete'}
-                    style={{borderRadius: 4, marginLeft: Metrics.smallMargin}}>
+                    style={{
+                      borderRadius: 4,
+                      // width: 100,
+                      marginLeft: Metrics.smallMargin,
+                    }}>
                     REMOVE
                   </Button>
                 </Block>
               </Block>
             );
           })}
-
-          <Button
-            mode="outlined"
-            onPress={() => actions.AddCategory()}
-            buttonColor={Colors.PRIMARY}
-            textColor={Colors.WHITE}
-            style={[styles.btn, {margin: Metrics.baseMargin}]}>
-            CREATE NEW CATEGORY
-          </Button>
         </Block>
       </ScrollView>
+      <Button
+        mode="outlined"
+        onPress={() => actions.AddCategory()}
+        buttonColor={Colors.PRIMARY}
+        textColor={Colors.WHITE}
+        style={[styles.btn, {margin: Metrics.baseMargin}]}>
+        ADD NEW CATEGORY
+      </Button>
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}

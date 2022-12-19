@@ -91,7 +91,7 @@ const Dashboard = () => {
                   onChangeText={name => actions.EditCategory({id: i.id, name})}
                 />
                 {i.fields.map(feild => (
-                  <View style={{flexDirection: 'row'}}>
+                  <Block row>
                     <MaterialTextField
                       label={'Field'}
                       value={feild.name}
@@ -104,6 +104,7 @@ const Dashboard = () => {
                       }
                       containerStyle={{flex: 1}}
                     />
+
                     <Block row center>
                       <Text
                         style={{
@@ -126,14 +127,23 @@ const Dashboard = () => {
                         }
                       />
                     </Block>
-                  </View>
+                  </Block>
                 ))}
+
+                <Button
+                  mode="outlined"
+                  onPress={() => actions.AddCategory()}
+                  buttonColor={Colors.PRIMARY}
+                  textColor={Colors.WHITE}
+                  style={[styles.btn, {margin: Metrics.baseMargin}]}>
+                  CREATE NEW CATEGORY
+                </Button>
+
                 <Block row>
                   <Button
                     mode="outlined"
                     onPress={() => {
                       setCategoryField(i);
-
                       bottomSheetRef.current?.snapToIndex(1);
                     }}
                     style={{borderRadius: 4}}>

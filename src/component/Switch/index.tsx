@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Switch, Text} from 'react-native';
 import {Metrics, Colors} from '../../theme';
 import Block from '../Block';
@@ -6,6 +6,10 @@ import Block from '../Block';
 function index(props) {
   const {label, onValueChange, value} = props;
   const [isEnabled, setIsEnabled] = useState(value);
+
+  useEffect(() => {
+    setIsEnabled(value);
+  }, [value]);
 
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
