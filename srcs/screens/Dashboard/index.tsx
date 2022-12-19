@@ -8,77 +8,24 @@
  * @format
  */
 
-import React, {useMemo, useCallback, useRef, useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  View,
-  StyleSheet,
-  FlatList,
-  Pressable,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {SafeAreaView, ScrollView, View, StyleSheet} from 'react-native';
 import {Button, IconButton, Text} from 'react-native-paper';
 import {Block, MaterialTextField} from '../../component';
 import {useMachines} from '../../hooks/useMachines';
 import {Colors, Metrics} from '../../theme';
-import BottomSheet from '@gorhom/bottom-sheet';
 
-let data_type = [
-  {id: 0, title: 'TEXT', type: 'TEXT'},
-  {id: 1, title: 'NUMBER', type: 'NUMBER'},
-  {id: 1, title: 'DATE', type: 'DATE'},
-  {id: 1, title: 'CHECKBOX', type: 'CHECKBOX'},
-];
 const Dashboard = () => {
-  const {actions, state} = useMachines();
-
-  // state
-  const [categoryField, setCategoryField] = useState<cField>({});
-
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['1%', '40%'], []);
-
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-
-  function _onSelectType(item) {
-    actions.AddCategoryField({id: categoryField.id, type: item.type});
-
-    bottomSheetRef.current.close();
-  }
-
-  const _renderItem = ({item}: object) => {
-    return (
-      <Pressable onPress={() => _onSelectType(item)}>
-        <Block mHorizontal={Metrics.baseMargin} pVertical={Metrics.baseMargin}>
-          <Text style={{fontSize: 16}}>{item.title}</Text>
-        </Block>
-      </Pressable>
-    );
-  };
-
-  const _renderSeparator = ({item}: object) => {
-    return (
-      <Block
-        center
-        height={1}
-        width={Metrics.screenWidth - 32}
-        bgColor={Colors.GREY}></Block>
-    );
-  };
+  const {dispatch, state} = useMachines();
+  console.log({state});
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView style={{flex: 1}} contentInsetAdjustmentBehavior="automatic">
-        <Block>
+      <ScrollView>
+        <Block flex>
           {state.map(i => {
             return (
-              <Block
+              <View
                 style={{
                   backgroundColor: 'white',
                   padding: 8,
@@ -88,7 +35,9 @@ const Dashboard = () => {
                 <MaterialTextField
                   label={'Category Name'}
                   value={i.name}
-                  onChangeText={name => actions.EditCategory({id: i.id, name})}
+                  onChangeText={name =>
+                    dispatch('EditMachineType')({id: i.id, name})
+                  }
                 />
                 {i.fields.map(feild => (
                   <View style={{flexDirection: 'row'}}>
@@ -96,7 +45,7 @@ const Dashboard = () => {
                       label={'Field'}
                       value={feild.name}
                       onChangeText={name =>
-                        actions.EditCategoryField({
+                        dispatch('EditMachineTypeField')({
                           id: i.id,
                           fieldId: feild.fieldId,
                           name,
@@ -111,7 +60,7 @@ const Dashboard = () => {
                           fontSize: 16,
                           marginHorizontal: Metrics.smallMargin,
                         }}>
-                        {feild.type}
+                        {'TEXT'}
                       </Text>
 
                       <IconButton
@@ -119,7 +68,7 @@ const Dashboard = () => {
                         iconColor={Colors.BLACK}
                         size={24}
                         onPress={() =>
-                          actions.DeleteCategoryField({
+                          dispatch('DeleteMachineTypeField')({
                             id: i.id,
                             fieldId: feild.fieldId,
                           })
@@ -131,29 +80,29 @@ const Dashboard = () => {
                 <Block row>
                   <Button
                     mode="outlined"
-                    onPress={() => {
-                      setCategoryField(i);
-
-                      bottomSheetRef.current?.snapToIndex(1);
-                    }}
+                    onPress={() =>
+                      dispatch('AddMachineTypeField')({id: i.id, type: 'TEXT'})
+                    }
                     style={{borderRadius: 4}}>
                     ADD NEW FIELD
                   </Button>
                   <Button
                     mode="outlined"
-                    onPress={() => actions.DeleteCategory({id: i.id})}
+                    onPress={() =>
+                      dispatch('AddMachineTypeField')({id: i.id, type: 'TEXT'})
+                    }
                     icon={'delete'}
                     style={{borderRadius: 4, marginLeft: Metrics.smallMargin}}>
                     REMOVE
                   </Button>
                 </Block>
-              </Block>
+              </View>
             );
           })}
 
           <Button
             mode="outlined"
-            onPress={() => actions.AddCategory()}
+            onPress={() => dispatch('AddMachineType')()}
             buttonColor={Colors.PRIMARY}
             textColor={Colors.WHITE}
             style={[styles.btn, {margin: Metrics.baseMargin}]}>
@@ -161,18 +110,6 @@ const Dashboard = () => {
           </Button>
         </Block>
       </ScrollView>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}>
-        <FlatList
-          data={data_type}
-          renderItem={_renderItem}
-          keyExtractor={item => item.id}
-          ItemSeparatorComponent={_renderSeparator}
-        />
-      </BottomSheet>
     </SafeAreaView>
   );
 };

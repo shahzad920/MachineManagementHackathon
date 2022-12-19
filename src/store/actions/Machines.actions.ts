@@ -1,11 +1,11 @@
 export const MachineActions =  {
-    AddMachineType :"AddMachineType",
-    EditMachineType :"EditMachineType",
-    DeleteMachineType :"DeleteMachineType",
+    AddCategory :"AddMachineType",
+    EditCategory :"EditMachineType",
+    DeleteCategory :"DeleteMachineType",
  
-    AddMachineTypeField :"AddMachineTypeField",
-    EditMachineTypeField: "EditMachineTypeField",
-    DeleteMachineTypeField :"DeleteMachineTypeField",
+    AddCategoryField :"AddMachineTypeField",
+    EditCategoryField: "EditMachineTypeField",
+    DeleteCategoryField :"DeleteMachineTypeField",
 
     AddMachine :"AddMachine",
     EditMachine :"EditMachine",
