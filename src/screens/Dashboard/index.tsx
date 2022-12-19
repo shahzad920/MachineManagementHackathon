@@ -8,29 +8,29 @@
  * @format
  */
 
-import React, {type PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React from 'react';
+import {SafeAreaView, View} from 'react-native';
+import {Button} from 'react-native-paper';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {MaterialTextField} from '../../component';
 
 const Dashboard = () => {
   return (
-    <SafeAreaView>
-      <View></View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={{flex: 1, padding: 8}}>
+        <MaterialTextField
+          label={'Email'}
+          value={''}
+          onChangeText={text => console.log('test: ', text)}
+        />
+
+        <Button
+          mode="contained"
+          onPress={() => console.log('Pressed')}
+          buttonColor={'blue'}>
+          Press me
+        </Button>
+      </View>
     </SafeAreaView>
   );
 };
