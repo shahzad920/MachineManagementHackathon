@@ -1,3 +1,4 @@
+import Block from './Block';
 import MaterialTextField from './MaterialTextField';
 
-export {MaterialTextField};
+export {Block, MaterialTextField};

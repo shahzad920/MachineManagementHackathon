@@ -725,7 +725,7 @@
     pirates "^4.0.5"
     source-map-support "^0.5.16"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.9.2":
   version "7.20.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.6.tgz#facf4879bfed9b5326326273a64220f099b0fce3"
   integrity sha512-Q+8MqP7TiHMWzSfwiJwXCjyf4GYA4Dgw3emg/7xmwsdLJOZUp+nMqcOwOzzYheuM1rhDu8FSj2l0aoMygEuXuA==
@@ -1457,7 +1457,7 @@
   resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.41.tgz#f6ecf57d1b12d2befcce00e928a6a097c22980aa"
   integrity sha512-ewXv/ceBaJprikMcxCmWU1FKyMAQ2X7a9Gtmzw8fcg2kIePI1crERDM818W+XYrxqdBBOdlf2rm137bU+BltCA==
 
-"@types/hoist-non-react-statics@^3.3.1":
+"@types/hoist-non-react-statics@^3.3.0", "@types/hoist-non-react-statics@^3.3.1":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
   integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
@@ -1528,6 +1528,16 @@
   integrity sha512-jvs5QMOrlyi0ScfT5Brha2roDoOWtbIOadNkp0jsueVen5+pH4SQAYtzL6xu0+dIcx3J/5LtZ/JYby2C1/zUug==
   dependencies:
     "@types/react" "*"
+
+"@types/react-redux@^7.1.24":
+  version "7.1.24"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.24.tgz#6caaff1603aba17b27d20f8ad073e4c077e975c0"
+  integrity sha512-7FkurKcS1k0FHZEtdbbgN8Oc6b+stGSfZYjQGicofJ0j4U0qIn/jaSvnP2pLwZKiai3/17xqqxkkrxTgN8UNbQ==
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.0"
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+    redux "^4.0.0"
 
 "@types/react-test-renderer@^18.0.0":
   version "18.0.0"
@@ -6162,6 +6172,13 @@ redux-storage@^4.1.2:
     loose-envify "^1.2.0"
     redux-actions "^0.10.1"
     redux-storage-merger-simple "^1.0.2"
+
+redux@^4.0.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.0.tgz#46f10d6e29b6666df758780437651eeb2b969f13"
+  integrity sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
 
 regenerate-unicode-properties@^10.1.0:
   version "10.1.0"
