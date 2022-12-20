@@ -138,7 +138,7 @@ export const Machine = ({id}: {id: string}) => {
                       });
                   }}
                   icon={'delete'}
-                  style={{borderRadius: 4, width: 100}}>
+                  style={{borderRadius: 4, width: Metrics.widthRatio(100)}}>
                   REMOVE
                 </Button>
               </Block>
